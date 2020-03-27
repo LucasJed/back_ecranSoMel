@@ -6,6 +6,7 @@ import javax.persistence.*;
  * Cette classe représente l'objet dans la base de donnée
  */
 @Entity
+@Table(name = "`TrendTable_Jour`")
 public class TrendTable_Jour {
 
     @Id
@@ -27,7 +28,8 @@ public class TrendTable_Jour {
     @Column
     private String description;
 
-    public TrendTable_Jour() {this.value=0;
+    public TrendTable_Jour() {
+        this.value = 0;
     }
 
     public TrendTable_Jour(long chrono, String name, float value, float quality, String description) {
@@ -40,6 +42,7 @@ public class TrendTable_Jour {
 
     /**
      * Cette fonction a but de test
+     *
      * @param name
      */
     public TrendTable_Jour(String name) {
@@ -51,6 +54,7 @@ public class TrendTable_Jour {
 
     /**
      * Cette fonction a but de test
+     *
      * @param name
      * @param value
      */

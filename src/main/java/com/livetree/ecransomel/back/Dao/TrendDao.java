@@ -3,11 +3,10 @@ package com.livetree.ecransomel.back.Dao;
 import com.livetree.ecransomel.back.Entities.TrendTable_Jour;
 import com.livetree.ecransomel.back.Entities.TrendTable_api;
 import com.livetree.ecransomel.back.Reporitory.TrendTable_JourRepository;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -57,7 +56,7 @@ public class TrendDao {
      * @return
      * @throws ParseException
      */
-    @GetMapping("getHistory/{building}/{startDate}/{endDate}")
+    @GetMapping("gethistory/{building}/{startDate}/{endDate}")
     public ArrayList<TrendTable_api> getListOfDayInformation(@PathVariable String building, @PathVariable String startDate, @PathVariable String endDate) throws ParseException {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -74,6 +73,11 @@ public class TrendDao {
         return trendTable_apis;
     }
 
+    @ModelAttribute
+    public void setReponseHeader(HttpServletResponse response){
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT");
+    }
     /**
      * Cette fonction permet de creer un objet TrendTable_api
      *
@@ -102,17 +106,17 @@ public class TrendDao {
 
         //Permet de renseigner quelle liste on va parcourir.
         switch (building) {
-            case "hei": {
+            case "HEI": {
                 listProd.addAll((heiProd));
                 listCons.addAll(heiCons);
                 break;
             }
-            case "ha": {
+            case "HA": {
                 listCons.addAll(haCons);
 
                 break;
             }
-            case "rizomme": {
+            case "Rizomm": {
                 listProd.addAll((rizommeCons));
                 listCons.addAll(rizommeProd);
                 break;
