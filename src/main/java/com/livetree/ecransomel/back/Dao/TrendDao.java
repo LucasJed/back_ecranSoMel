@@ -36,19 +36,24 @@ public class TrendDao {
 
     private final TrendTable_JourRepository trendTable_jourRepository;
 
+    /**
+     * Api test, affiche le contenu de la bdd
+     *
+     * @return
+     */
     @GetMapping("/test")
     public ArrayList<TrendTable_Jour> getAll() {
 
-        return (ArrayList<TrendTable_Jour>) trendTable_jourRepository.findAll();
+        return trendTable_jourRepository.findAll();
     }
-
 
 
     /**
      * Cette fonction relance l'historique sur une période donnée
+     *
      * @param building
-     * @param startDate
-     * @param endDate
+     * @param startDate jour de début, au format dd.MM.yyyy
+     * @param endDate jour de fin, au format dd.MM.yyyy
      * @return
      * @throws ParseException
      */
@@ -71,7 +76,8 @@ public class TrendDao {
 
     /**
      * Cette fonction permet de creer un objet TrendTable_api
-     * @param day
+     *
+     * @param day jour, au format dd.MM.yyyy
      * @param building nom du batiment
      * @return
      * @throws ParseException
@@ -94,6 +100,7 @@ public class TrendDao {
         ArrayList<String> listProd = new ArrayList<>();
         ArrayList<String> listCons = new ArrayList<>();
 
+        //Permet de renseigner quelle liste on va parcourir.
         switch (building) {
             case "hei": {
                 listProd.addAll((heiProd));
@@ -115,6 +122,7 @@ public class TrendDao {
         }
         System.out.println(listCons);
         for (String name : listCons) {
+            //Initialisation
             TrendTable_Jour trendTable_jour_matin = new TrendTable_Jour(building);
             TrendTable_Jour trendTable_jour_soir = new TrendTable_Jour(building);
             if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name) != null) {
@@ -122,14 +130,15 @@ public class TrendDao {
 
             }
 
+            //TODO automatiser, la création d'un service peut etre envisagé
             Date dateNow = new Date(System.currentTimeMillis() - 5 * 60);
             if (dateNow.compareTo(new SimpleDateFormat("dd.MM.yyyy" + "hh:mm").parse(day + "19:30")) <= 0) {
                 Instant instant1 = dateNow.toInstant();
                 System.out.println(instant1);
                 long duree2 = fromInstant(instant1);
                 System.out.println("vox 1");
-                if (trendTable_jourRepository.findFirstByChronoBetween(duree2, duree2 + 6_000_000_000L) != null) {
-                    trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetween(duree2, duree2 + 6_000_000_000L);
+                if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name) != null) {
+                    trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name);
 
                 }
 
@@ -139,8 +148,8 @@ public class TrendDao {
                 long duree2 = fromInstant(instant1);
                 System.out.println(instant1);
                 System.out.println("vox 2");
-                if (trendTable_jourRepository.findFirstByChronoBetween(duree2, duree2 + 6_000_000_000L) != null) {
-                    trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetween(duree2, duree2 + 6_000_000_000L);
+                if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name) != null) {
+                    trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name);
 
                 }
             }
@@ -153,7 +162,7 @@ public class TrendDao {
         for (String name : listProd) {
             TrendTable_Jour trendTable_jour_matin = new TrendTable_Jour();
             TrendTable_Jour trendTable_jour_soir = new TrendTable_Jour();
-            if(trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name)!=null){
+            if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name) != null) {
                 trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name);
 
             }
@@ -163,7 +172,7 @@ public class TrendDao {
                 System.out.println(instant1);
                 long duree2 = fromInstant(instant1);
                 System.out.println("vox 1");
-                if(trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name)!=null){
+                if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name) != null) {
                     trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name);
 
                 }
@@ -174,7 +183,7 @@ public class TrendDao {
                 long duree2 = fromInstant(instant1);
                 System.out.println(instant1);
                 System.out.println("vox 2");
-                if(trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name)!=null){
+                if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name) != null) {
                     trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name);
 
                 }

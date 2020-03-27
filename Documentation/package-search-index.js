@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"com.livetree.ecransomel.back"},{"l":"com.livetree.ecransomel.back.Dao"},{"l":"com.livetree.ecransomel.back.Entities"},{"l":"com.livetree.ecransomel.back.ManagerEntity"},{"l":"com.livetree.ecransomel.back.Reporitory"}]

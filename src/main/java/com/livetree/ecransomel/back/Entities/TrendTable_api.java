@@ -4,6 +4,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Cette classe permet de mettre en forme l'objet renvoyé en tant qu'API via springboot
+ *
+ */
 public class TrendTable_api {
 
 
@@ -44,6 +48,7 @@ public class TrendTable_api {
 
 
 
+    //Getter and setter
     public String getNomBatiment() {
         return nomBatiment;
     }

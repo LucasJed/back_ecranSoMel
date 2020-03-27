@@ -9,9 +9,20 @@ import java.util.ArrayList;
 @Repository
 public interface TrendTable_JourRepository extends CrudRepository<TrendTable_Jour,Long> {
 
+    /**
+     * JPA
+     * @return liste de la base de donnée
+     */
     ArrayList<TrendTable_Jour> findAll();
-    ArrayList<TrendTable_Jour> findAllByChronoBetweenOrderByChrono(long chrono1, long chrono2);
 
+    /**
+     *
+     * @param chrono Chrono début de la liste
+     * @param chrono2 Chrono fin de la liste de date
+     * @param buildingName
+     * @return
+     */
     TrendTable_Jour findFirstByChronoBetweenAndName(long chrono, long chrono2,String buildingName);
-    TrendTable_Jour findFirstByChronoBetween(long chrono, long chrono2);
+
+
 }

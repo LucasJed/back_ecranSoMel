@@ -2,6 +2,9 @@ package com.livetree.ecransomel.back.Entities;
 
 import javax.persistence.*;
 
+/**
+ * Cette classe représente l'objet dans la base de donnée
+ */
 @Entity
 public class TrendTable_Jour {
 
@@ -35,6 +38,10 @@ public class TrendTable_Jour {
         this.description = description;
     }
 
+    /**
+     * Cette fonction a but de test
+     * @param name
+     */
     public TrendTable_Jour(String name) {
         this.name = name;
         this.value = 1;
@@ -42,12 +49,18 @@ public class TrendTable_Jour {
 
     }
 
+    /**
+     * Cette fonction a but de test
+     * @param name
+     * @param value
+     */
     public TrendTable_Jour(String name, float value) {
         this.chrono = (132279065400000000L);
         this.name = name;
         this.value = value;
     }
 
+    //Getter and setter
     public Integer getId() {
         return id;
     }
