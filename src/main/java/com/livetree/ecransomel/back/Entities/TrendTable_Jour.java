@@ -6,14 +6,14 @@ import javax.persistence.*;
  * Cette classe représente l'objet dans la base de donnée
  */
 @Entity
-@Table(name = "`TrendTable_Jour`")
+@Table(name = "TrendTable_Jour")
 public class TrendTable_Jour {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(name = "Chrono")
     private long chrono;
 
     @Column
