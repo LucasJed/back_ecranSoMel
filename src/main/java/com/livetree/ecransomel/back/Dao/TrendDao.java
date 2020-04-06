@@ -5,7 +5,6 @@ import com.livetree.ecransomel.back.Entities.TrendTable_api;
 import com.livetree.ecransomel.back.Reporitory.TrendTable_JourRepository;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -52,7 +51,7 @@ public class TrendDao {
      *
      * @param building
      * @param startDate jour de début, au format dd.MM.yyyy
-     * @param endDate jour de fin, au format dd.MM.yyyy
+     * @param endDate   jour de fin, au format dd.MM.yyyy
      * @return
      * @throws ParseException
      */
@@ -74,21 +73,22 @@ public class TrendDao {
     }
 
     @ModelAttribute
-    public void setReponseHeader(HttpServletResponse response){
+    public void setReponseHeader(HttpServletResponse response) {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT");
     }
+
     /**
      * Cette fonction permet de creer un objet TrendTable_api
      *
-     * @param day jour, au format dd.MM.yyyy
+     * @param day      jour, au format dd.MM.yyyy
      * @param building nom du batiment
      * @return
      * @throws ParseException
      */
     @GetMapping("getday/{building}/{day}")
     public TrendTable_api getDayInformations(@PathVariable String day, @PathVariable String building) throws ParseException {
-        Date date1 = new SimpleDateFormat("dd.MM.yyyy" + "hh:mm").parse(day + "11:50");
+        Date date1 = new SimpleDateFormat("dd.MM.yyyy" + "hh:mm").parse(day + "08:00");
         System.out.println(date1);
         Instant instant = date1.toInstant();
         long duree = fromInstant(instant);
@@ -125,11 +125,17 @@ public class TrendDao {
 
         }
         System.out.println(listCons);
+
+
         for (String name : listCons) {
             //Initialisation
             TrendTable_Jour trendTable_jour_matin = new TrendTable_Jour(building);
             TrendTable_Jour trendTable_jour_soir = new TrendTable_Jour(building);
             if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name) != null) {
+                {
+                    trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name);
+
+                }
                 trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name);
 
             }
@@ -159,7 +165,6 @@ public class TrendDao {
             }
             System.out.println(trendTable_jour_soir + "lo");
             trendTable_api.setConsumption(trendTable_jour_soir.getValue() - trendTable_jour_matin.getValue() + trendTable_api.getConsumption());
-            trendTable_api.setTimestamp(Timestamp.from(toInstant(trendTable_jour_matin.getChrono())));
         }
 
 
@@ -175,7 +180,6 @@ public class TrendDao {
                 Instant instant1 = dateNow.toInstant();
                 System.out.println(instant1);
                 long duree2 = fromInstant(instant1);
-                System.out.println("vox 1");
                 if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name) != null) {
                     trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name);
 
@@ -195,9 +199,10 @@ public class TrendDao {
             System.out.println(trendTable_jour_soir.getValue() + "lo");
             trendTable_api.setProduction(trendTable_jour_soir.getValue() - trendTable_jour_matin.getValue() + trendTable_api.getProduction());
         }
-        System.out.println(duree);
-        System.out.println(toInstant(duree));
+
         System.out.println(toInstant(duree + 6_000_000_000L));
+        System.out.println(trendTable_api.getConsumption());
+        trendTable_api.setTimestamp( new Timestamp(date1.getTime()));
 
 
         return trendTable_api;

@@ -32,7 +32,7 @@ public class BackApplication {
     CommandLineRunner init(TrendTable_JourRepository trendTable_jourRepository) {
         return args -> {
             //TODO Partie a supprimer en production
-            Stream.of("HEI_PV.Energies.EAtot_neg",
+           /* Stream.of("HEI_PV.Energies.EAtot_neg",
                     "HEI_13RT.Energies.EAtot_pos",
                     "HEI_5RNS.Energies.EAtot_pos",
                     "HA.Energies.EAtot_pos",
@@ -42,7 +42,7 @@ public class BackApplication {
                 TrendTable_Jour building = new TrendTable_Jour(name);
                 trendTable_jourRepository.save(building);
             });
-
+*/
             //Fin de partie à supprimé
 
 

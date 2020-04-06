@@ -33,7 +33,7 @@ public class TrendTable_api {
     }
 
     /**
-     * No arg Consttructeur
+     * No arg Constructeur
      */
     public TrendTable_api() {
     }

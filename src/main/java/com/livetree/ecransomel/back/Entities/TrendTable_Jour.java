@@ -16,23 +16,21 @@ public class TrendTable_Jour {
     @Column(name = "Chrono")
     private long chrono;
 
-    @Column
+    @Column(name = "Name")
     private String name;
 
-    @Column
+    @Column(name="Value")
     private float value;
 
-    @Column
-    private float quality;
+    @Column(name="Quality")
+    private int quality;
 
-    @Column
+    @Column(name="Description")
     private String description;
 
-    public TrendTable_Jour() {
-        this.value = 0;
-    }
+    public TrendTable_Jour() { }
 
-    public TrendTable_Jour(long chrono, String name, float value, float quality, String description) {
+    public TrendTable_Jour(long chrono, String name, float value, int quality, String description) {
         this.chrono = chrono;
         this.name = name;
         this.value = value;
@@ -47,22 +45,10 @@ public class TrendTable_Jour {
      */
     public TrendTable_Jour(String name) {
         this.name = name;
-        this.value = 1;
-        this.chrono = (132279065400000000L);
 
     }
 
-    /**
-     * Cette fonction a but de test
-     *
-     * @param name
-     * @param value
-     */
-    public TrendTable_Jour(String name, float value) {
-        this.chrono = (132279065400000000L);
-        this.name = name;
-        this.value = value;
-    }
+
 
     //Getter and setter
     public Integer getId() {
@@ -97,11 +83,11 @@ public class TrendTable_Jour {
         this.value = value;
     }
 
-    public float getQuality() {
+    public int getQuality() {
         return quality;
     }
 
-    public void setQuality(float quality) {
+    public void setQuality(int quality) {
         this.quality = quality;
     }
 
