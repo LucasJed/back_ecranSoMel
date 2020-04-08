@@ -91,9 +91,10 @@ public class TrendDao {
         Date date1 = new SimpleDateFormat("dd.MM.yyyy" + "hh:mm").parse(day + "08:00");
         System.out.println(date1);
         Instant instant = date1.toInstant();
-        long duree = fromInstant(instant);
+        long fileTimeMatin = fromInstant(instant);
 
 
+        //On initialise l'objet qui va etre retourné
         TrendTable_api trendTable_api = new TrendTable_api();
 
 
@@ -126,22 +127,31 @@ public class TrendDao {
         }
         System.out.println(listCons);
 
+        //Pour connaitre la consommation d'un batiment, on effectue la soustraction de la valeur de la production du soir moins celle du matin
+
+        System.out.println(" ________________Consommation___________-");
 
         for (String name : listCons) {
-            //Initialisation
+            System.out.println("Ajout de la consomation pour "+building+ " depuis le capteur  "+name);
+            //Initialisation pour la consommation
             TrendTable_Jour trendTable_jour_matin = new TrendTable_Jour(building);
             TrendTable_Jour trendTable_jour_soir = new TrendTable_Jour(building);
-            if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name) != null) {
+
+            //Test de présence dans la base de donnée du matin
+            if (trendTable_jourRepository.findFirstByChronoBetweenAndName(fileTimeMatin, fileTimeMatin + 6_000_000_000L, name) != null) {
                 {
-                    trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name);
+                    trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(fileTimeMatin, fileTimeMatin + 6_000_000_000L, name);
 
                 }
-                trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name);
+                trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(fileTimeMatin, fileTimeMatin + 6_000_000_000L, name);
+                System.out.println("Valeur au matin entree 8h et 8h05"+trendTable_jour_matin.getValue());
+
 
             }
 
-            //TODO automatiser, la création d'un service peut etre envisagé
+            //Recuperation de l'objet trendtable_jour soir
             Date dateNow = new Date(System.currentTimeMillis() - 5 * 60);
+            //Si l'heure du systeme est avant 19h30, on recupere l'heure actuelle
             if (dateNow.compareTo(new SimpleDateFormat("dd.MM.yyyy" + "hh:mm").parse(day + "19:30")) <= 0) {
                 Instant instant1 = dateNow.toInstant();
                 System.out.println(instant1);
@@ -149,6 +159,7 @@ public class TrendDao {
                 System.out.println("vox 1");
                 if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name) != null) {
                     trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name);
+                    System.out.println("Valeur au soir entre à l'heure du systeme(avant 19h30)"+trendTable_jour_soir.getValue());
 
                 }
 
@@ -161,20 +172,33 @@ public class TrendDao {
                 if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name) != null) {
                     trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name);
 
+                    System.out.println("Valeur au soir entre à l'heure du systeme(avant 19h30)"+trendTable_jour_soir.getValue());
+
+                }
+                else{
+                    System.out.println("Erreur pour recuperer la valeur actuelle de la consomation au soir ");
                 }
             }
-            System.out.println(trendTable_jour_soir + "lo");
+            System.out.println(trendTable_jour_soir.getValue() + "lo");
+            System.out.println(trendTable_jour_matin.getId());
+            System.out.println(trendTable_jour_soir.getValue()+"-"+trendTable_jour_matin.getValue()+"(+  autres valeurs"+trendTable_api.getConsumption());
             trendTable_api.setConsumption(trendTable_jour_soir.getValue() - trendTable_jour_matin.getValue() + trendTable_api.getConsumption());
         }
 
+        //Pour connaitre la production d'un batiment, on effectue la soustraction de la valeur de la production du soir moins celle du matin
 
+        System.out.println(" ________________Production___________-");
         for (String name : listProd) {
+            //Initialisation des objets representant le matin et le soir pour la production
+            System.out.println("Ajout de la production pour "+building+ "depuis le capteur  "+name);
+
             TrendTable_Jour trendTable_jour_matin = new TrendTable_Jour();
             TrendTable_Jour trendTable_jour_soir = new TrendTable_Jour();
-            if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name) != null) {
-                trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree, duree + 6_000_000_000L, name);
 
+            if (trendTable_jourRepository.findFirstByChronoBetweenAndName(fileTimeMatin, fileTimeMatin + 6_000_000_000L, name) != null) {
+                trendTable_jour_matin = trendTable_jourRepository.findFirstByChronoBetweenAndName(fileTimeMatin, fileTimeMatin + 6_000_000_000L, name);
             }
+
             Date dateNow = new Date(System.currentTimeMillis() - 5 * 60);
             if (dateNow.compareTo(new SimpleDateFormat("dd.MM.yyyy" + "hh:mm").parse(day + "19:30")) <= 0) {
                 Instant instant1 = dateNow.toInstant();
@@ -191,18 +215,18 @@ public class TrendDao {
                 long duree2 = fromInstant(instant1);
                 System.out.println(instant1);
                 System.out.println("vox 2");
-                if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name) != null) {
-                    trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 6_000_000_000L, name);
+                if (trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 7_000_000_000L, name) != null) {
+                    trendTable_jour_soir = trendTable_jourRepository.findFirstByChronoBetweenAndName(duree2, duree2 + 7_000_000_000L, name);
 
                 }
             }
-            System.out.println(trendTable_jour_soir.getValue() + "lo");
+            System.out.println("Valeur trendTable jour au  soir "+trendTable_jour_soir.getValue() );
             trendTable_api.setProduction(trendTable_jour_soir.getValue() - trendTable_jour_matin.getValue() + trendTable_api.getProduction());
         }
 
-        System.out.println(toInstant(duree + 6_000_000_000L));
+        System.out.println(toInstant(fileTimeMatin + 6_000_000_000L));
         System.out.println(trendTable_api.getConsumption());
-        trendTable_api.setTimestamp( new Timestamp(date1.getTime()));
+        trendTable_api.setTimestamp(new Timestamp(date1.getTime()));
 
 
         return trendTable_api;
