@@ -57,6 +57,19 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        
+        <!-- SQL Server - Mssql-Jdbc driver -->
+        <dependency>
+	        <groupId>com.microsoft.sqlserver</groupId>
+	        <artifactId>mssql-jdbc</artifactId>
+	        <scope>runtime</scope>
+	    </dependency>
+	    <!-- SQL Server - JTDS driver -->
+	    <dependency>
+	        <groupId>net.sourceforge.jtds</groupId>
+	        <artifactId>jtds</artifactId>
+	        <scope>runtime</scope>
+	    </dependency>
 
     </dependencies>
 

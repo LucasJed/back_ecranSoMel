@@ -22,7 +22,15 @@ public interface TrendTable_JourRepository extends CrudRepository<TrendTable_Jou
      * @param buildingName
      * @return
      */
-    TrendTable_Jour findFirstByChronoBetweenAndName(long chrono, long chrono2,String buildingName);
-
+	TrendTable_Jour findFirstByChronoBetweenAndName(long chrono, long chrono2,String buildingName);
+	
+    /**
+    *
+    * @param chrono Chrono fin de la liste
+    * @param chrono2 Chrono début de la liste de date
+    * @param buildingName
+    * @return
+    */
+	TrendTable_Jour findFirstByChronoBetweenAndNameOrderByChronoDesc(long chrono, long chrono2,String buildingName);
 
 }
